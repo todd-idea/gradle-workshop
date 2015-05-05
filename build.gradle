@@ -1,12 +1,23 @@
 /*
-    1. Configure your environment to always build with the Gradle Daemon.
-    2. Execute `gradle hello` (notice the faster response)
-
-    Docs: http://www.gradle.org/docs/current/userguide/gradle_daemon.html
-*/    
-
-task hello {
+    1. Add a `helloWorld` task that prints 'hello world'.
+    2. Execute this task.
+    3. Add a `printDate` task that prints out the current date.
+    4. Execute the `printDate` task, abbreviating its name.
+    5. Execute `gradle tasks`.
+    6. Add meaningful descriptions to the tasks.
+       Hint: http://www.gradle.org/docs/current/dsl/org.gradle.api.Task.html#org.gradle.api.Task:description
+    7. Execute `gradle tasks` again.
+*/
+task helloWorld {
+    description "Print hello world ... duh"
     doLast {
-        println "Welcome to the Gradle workshop!"
+        println 'hello world'
+    }
+}
+
+task printDate {
+    description "Print the date"
+    doLast {
+        println new Date()
     }
 }
