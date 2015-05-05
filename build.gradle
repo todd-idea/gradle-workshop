@@ -1,28 +1,26 @@
 /*
-    1. Write a custom task class of type `Greeting`.
-        - Add a property `greeting` for the greeting text.
-        - Assign a default value to it.
-        - The task action should print the greeting text. 
-        - Add two tasks to your build script, both of type `Greeting`.
-        - One should assign a custom value to the greeting property.
-        - Execute both tasks.
+    1. Make the `date` task depend on the `hello` task.
+    2. Execute the `date` task.
+    3. Execute `gradle tasks --all`.
+    4. The `--dry-run` (or `-m`) command line option executes the build but disables all actions. Execute `date` with the `--dry-run` option.
+    5. Add some top level `println` statements to the script.
+    6. Add a `println` statement to the configuration block of the `date` task.
+    7. Execute the `hello` task and analyze the output.
 */
 
-class Greeting extends DefaultTask {
-    String greeting = "Default greeting"
+println "Before hello"
 
-    @TaskAction
-    void greet() {
-        println greeting
+task hello {
+    println "Configuring hello"
+    doLast {
+        println "Hello World"
     }
 }
 
-task greeting1(type: Greeting) {
-    description "My custom greeting"
-
-    greeting "My greeting 1"
-}
-
-task greeting2(type: Greeting) {
-    description "My standard greeting"
+task date {
+    dependsOn hello
+    println "Configuring date"
+    doLast {
+        println new Date()
+    }
 }
