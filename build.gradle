@@ -1,23 +1,28 @@
 /*
-    1. Add a `helloWorld` task that prints 'hello world'.
-    2. Execute this task.
-    3. Add a `printDate` task that prints out the current date.
-    4. Execute the `printDate` task, abbreviating its name.
-    5. Execute `gradle tasks`.
-    6. Add meaningful descriptions to the tasks.
-       Hint: http://www.gradle.org/docs/current/dsl/org.gradle.api.Task.html#org.gradle.api.Task:description
-    7. Execute `gradle tasks` again.
+    1. Write a custom task class of type `Greeting`.
+        - Add a property `greeting` for the greeting text.
+        - Assign a default value to it.
+        - The task action should print the greeting text. 
+        - Add two tasks to your build script, both of type `Greeting`.
+        - One should assign a custom value to the greeting property.
+        - Execute both tasks.
 */
-task helloWorld {
-    description "Print hello world ... duh"
-    doLast {
-        println 'hello world'
+
+class Greeting extends DefaultTask {
+    String greeting = "Default greeting"
+
+    @TaskAction
+    void greet() {
+        println greeting
     }
 }
 
-task printDate {
-    description "Print the date"
-    doLast {
-        println new Date()
-    }
+task greeting1(type: Greeting) {
+    description "My custom greeting"
+
+    greeting "My greeting 1"
+}
+
+task greeting2(type: Greeting) {
+    description "My standard greeting"
 }
