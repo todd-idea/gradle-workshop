@@ -1,0 +1,12 @@
+/*
+    1. Configure your environment to always build with the Gradle Daemon.
+    2. Execute `gradle hello` (notice the faster response)
+
+    Docs: http://www.gradle.org/docs/current/userguide/gradle_daemon.html
+*/    
+
+task hello {
+    doLast {
+        println "Welcome to the Gradle workshop!"
+    }
+}
