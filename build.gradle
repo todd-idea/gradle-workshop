@@ -1,26 +1,15 @@
 /*
-    1. Make the `date` task depend on the `hello` task.
-    2. Execute the `date` task.
-    3. Execute `gradle tasks --all`.
-    4. The `--dry-run` (or `-m`) command line option executes the build but disables all actions. Execute `date` with the `--dry-run` option.
-    5. Add some top level `println` statements to the script.
-    6. Add a `println` statement to the configuration block of the `date` task.
-    7. Execute the `hello` task and analyze the output.
+    1. Add a copy task that copies all `*.txt` files under `content` and all files under images into `build/texts` (observe the preserved hierarchy).
+    2. Add a section to the copy task from 1. that also copies all `*.dat` files under `content` and renames them to `*.data`.
+       Hint: The rename regex is `"(.*)\\.dat"`.
 */
 
-println "Before hello"
-
-task hello {
-    println "Configuring hello"
-    doLast {
-        println "Hello World"
+task copy(type: Copy) {
+    into "$buildDir/texts"
+    from("content") {
+        include "**/*.txt"
+        include "**/*.dat"
+        rename "(.*)\\.dat", '$1.data'
     }
-}
-
-task date {
-    dependsOn hello
-    println "Configuring date"
-    doLast {
-        println new Date()
-    }
+    from("images")
 }
