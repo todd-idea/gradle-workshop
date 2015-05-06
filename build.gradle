@@ -1,15 +1,35 @@
 /*
-    1. Add a copy task that copies all `*.txt` files under `content` and all files under images into `build/texts` (observe the preserved hierarchy).
-    2. Add a section to the copy task from 1. that also copies all `*.dat` files under `content` and renames them to `*.data`.
-       Hint: The rename regex is `"(.*)\\.dat"`.
+    Background: The `Size` task type computes the total size of all files in the `inputDir` directory, and writes the result into `outputFile`.
+
+     1. Add a task `textsize` of type `Size`. Set `inputDir` to `src/textfiles`. Set `outputFile` to `build/textsize.txt`.
+     2. Run `textsize` a few times. What do you see?
+     3. Use annotations to declare the input/output values of the `Size` type.
+     4. Rerun `textsize` a few times. What do you see?
+     5. Change the contents of an input file and rerun `textsize` a few times. What do you see?
+     6. Change the contents of the output file and rerun `textsize` a few times. What do you see?
+     7. Change the `inputDir` property to a non-existing directory and rerun `textsize`. What do you see?
+     8. Explicitly remove the build directory and rerun `textsize`. Is there any explicit logic that creates the build directory? How is it created?
+     9. Run `cleanTextsize` and find out what it does.
+     10. (Optional) Try to improve the solution of the `archives` lab such that the task dependency between `unzip` and `zip` can be inferred by Gradle.
 */
 
-task copy(type: Copy) {
-    into "$buildDir/texts"
-    from("content") {
-        include "**/*.txt"
-        include "**/*.dat"
-        rename "(.*)\\.dat", '$1.data'
+apply plugin: "base"
+
+class Size extends DefaultTask {
+    @InputDirectory
+    FileTree inputDir
+
+    @OutputFile
+    File outputFile
+
+    @TaskAction
+    void generate() {
+        outputFile.parentFile.mkdirs()
+        outputFile.text = inputDir.files.sum { it.size() }
     }
-    from("images")
+}
+
+task textsize(type: Size) {
+    inputDir = fileTree("src/textfiles")
+    outputFile = file("$buildDir/textsize.txt")
 }
