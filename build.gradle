@@ -1,9 +1,37 @@
 /*
-    1. Apply the `plugins/info.gradle` script plugin to the build. Execute `gradle tasks` to see what task has been added. Execute the task.
-    2. Turn `info.gradle` into a plugin class called `InfoPlugin` (you can write it in the build script).
-    3. Apply the plugin class and execute the task.
-    4. Turn the implementation of the `info` task into a task class called `InfoTask`. Verify that the build still works.
-    5. (Optional) Move the plugin class into `$rootDir/buildSrc/src/main/groovy/InfoPlugin.groovy`, and the task class into `$rootDir/buildSrc/src/main/groovy/InfoTask.groovy`. Verify that the build still works.
+1. Execute `gradle tasks` to see which tasks are available.
+2. Build the Jar archive and try to find it.
+3. Configure the `jar` task to add an entry named `Implementation-Version` to the Jar manifest. Set the entry's value to the project version.
+4. Edit the source code of a test to make it fail, execute the project's tests, and check the HTML test report.
+5. Configure the `test` task to run tests in parallel.
+6. Move the sources from `src/main/java` to `java`, and reconfigure the `main` source set accordingly.
+7. (optional) Apply the `eclipse` plugin, run `gradle eclipse`, and open the project in Eclipse.
+8. (optional) Apply the `idea` plugin, run `gradle idea`, and open the project in IntelliJ IDEA.
 */
 
-apply plugin: InfoPlugin
+apply plugin: "java"
+
+group = "my.company"
+description = "My Java Library"
+version = "1.0"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "commons-collections:commons-collections:3.2"
+    testCompile "junit:junit:4.11"
+}
+
+jar {
+    manifest {
+        attributes([
+            "Implementation-Version": project.version
+        ])
+    }
+}
+
+test {
+    maxParallelForks 3
+}
