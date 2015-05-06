@@ -1,35 +1,9 @@
 /*
-    Background: The `Size` task type computes the total size of all files in the `inputDir` directory, and writes the result into `outputFile`.
-
-     1. Add a task `textsize` of type `Size`. Set `inputDir` to `src/textfiles`. Set `outputFile` to `build/textsize.txt`.
-     2. Run `textsize` a few times. What do you see?
-     3. Use annotations to declare the input/output values of the `Size` type.
-     4. Rerun `textsize` a few times. What do you see?
-     5. Change the contents of an input file and rerun `textsize` a few times. What do you see?
-     6. Change the contents of the output file and rerun `textsize` a few times. What do you see?
-     7. Change the `inputDir` property to a non-existing directory and rerun `textsize`. What do you see?
-     8. Explicitly remove the build directory and rerun `textsize`. Is there any explicit logic that creates the build directory? How is it created?
-     9. Run `cleanTextsize` and find out what it does.
-     10. (Optional) Try to improve the solution of the `archives` lab such that the task dependency between `unzip` and `zip` can be inferred by Gradle.
+    1. Apply the `plugins/info.gradle` script plugin to the build. Execute `gradle tasks` to see what task has been added. Execute the task.
+    2. Turn `info.gradle` into a plugin class called `InfoPlugin` (you can write it in the build script).
+    3. Apply the plugin class and execute the task.
+    4. Turn the implementation of the `info` task into a task class called `InfoTask`. Verify that the build still works.
+    5. (Optional) Move the plugin class into `$rootDir/buildSrc/src/main/groovy/InfoPlugin.groovy`, and the task class into `$rootDir/buildSrc/src/main/groovy/InfoTask.groovy`. Verify that the build still works.
 */
 
-apply plugin: "base"
-
-class Size extends DefaultTask {
-    @InputDirectory
-    FileTree inputDir
-
-    @OutputFile
-    File outputFile
-
-    @TaskAction
-    void generate() {
-        outputFile.parentFile.mkdirs()
-        outputFile.text = inputDir.files.sum { it.size() }
-    }
-}
-
-task textsize(type: Size) {
-    inputDir = fileTree("src/textfiles")
-    outputFile = file("$buildDir/textsize.txt")
-}
+apply plugin: InfoPlugin

@@ -1,0 +1,9 @@
+class InfoPlugin implements Plugin<Project> {
+    void apply(Project project) {
+        Task infoTask = project.task("info") {
+            doLast {
+                println project.name + " ... what what"
+            }
+        }
+    }
+}
